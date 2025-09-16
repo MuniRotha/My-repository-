@@ -33,3 +33,12 @@ plt.ylabel('True Positive Rate')
 plt.legend(loc='lower right')
 plt.show()
 
+
+
+# Accuracy Comparison: This bar chart displays the overall correctness of each model. Higher accuracy indicates better performance in correctly classifying both positive and negative instances.
+# Precision Comparison: Precision measures the proportion of positive predictions that are actually correct. A higher precision indicates fewer false positives.
+# Recall Comparison: Recall, or sensitivity, shows the proportion of actual positives correctly identified by the model. Higher recall means fewer false negatives.
+# F1-Score Comparison: The F1-Score is the harmonic mean of precision and recall. It balances the two metrics, providing a single measure of a model's performance.
+# AUC Comparison: The Area Under the Curve (AUC) represents the likelihood of the model distinguishing between classes. A higher AUC indicates a better model.
+# ROC Curve: The Receiver Operating Characteristic curve plots the true positive rate against the false positive rate. The closer the curve is to the top-left corner, the better the model's performance.
+
