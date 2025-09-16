@@ -1,41 +1,35 @@
-# 1st Question: Write code to read a json file, and count numbre of chicken in the given image.
-import json
-json_file_path = 'D:\\496.json'
-def count_chickens_in_json(file_path):
-    with open(file_path, 'r') as file:
-            data = json.load(file)
-    return sum(1 for shape in data.get('shapes', []) if shape.get('label') == 'chicken')
-print(f"The Number of 'chicken'is: {count_chickens_in_json(json_file_path)}")
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+from sklearn.metrics import roc_curve, auc
+# Assuming 'results' is a DataFrame containing the performance metrics
+# with columns: 'Model', 'Accuracy', 'Precision', 'Recall', 'F1_Score', 'AUC'
 
+# Set the figure size
+plt.figure(figsize=(12, 8))
 
-#-----------------------------------------------------------------------------------------------
+# Create subplots for each metric
+metrics = ['Accuracy', 'Precision', 'Recall', 'F1_Score', 'AUC']
+for i, metric in enumerate(metrics, 1):
+    plt.subplot(2, 3, i)
+    sns.barplot(x='Model', y=metric, data=results)
+    plt.title(f'{metric} Comparison')
+    plt.ylim(0, 1)
 
+# Adjust layout
+plt.tight_layout()
+plt.show()
 
-# Question2: Use the MediaPipe library to extract joint keypoints from humans.
-import cv2
-import mediapipe as mp
-import json
-import glob
-import os
-mp_pose = mp.solutions.pose
-pose = mp_pose.Pose(static_image_mode=True)
-image_folder = 'D:\\image Folder'  
-output_folder = 'output_keypoints'
-os.makedirs(output_folder, exist_ok=True)
-for img_path in glob.glob(f"{image_folder}/*.jpg"):
-    img = cv2.imread(img_path)
-    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    results = pose.process(img_rgb)
-    keypoints = []
-    if results.pose_landmarks:
-        for lm in results.pose_landmarks.landmark:
-            keypoints.append({
-                'x': lm.x,
-                'y': lm.y,
-                'z': lm.z,
-                'visibility': lm.visibility
-            })
-    out_path = os.path.join(output_folder, os.path.splitext(os.path.basename(img_path))[0] + '.json')
-    with open(out_path, 'w') as f:
-        json.dump(keypoints, f, indent=2)
-pose.close()
+# Assuming 'y_true' and 'y_pred' are the true labels and predicted probabilities
+fpr, tpr, _ = roc_curve(y_true, y_pred)
+roc_auc = auc(fpr, tpr)
+
+plt.figure(figsize=(8, 6))
+plt.plot(fpr, tpr, color='blue', lw=2, label=f'ROC curve (area = {roc_auc:.2f})')
+plt.plot([0, 1], [0, 1], color='gray', linestyle='--')
+plt.title('Receiver Operating Characteristic (ROC) Curve')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.legend(loc='lower right')
+plt.show()
+
